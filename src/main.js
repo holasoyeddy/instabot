@@ -1,5 +1,10 @@
 const Server = require('./server');
-const server = new Server(); // This should contain the server config.
+const Configuration = require('./configuration');
+const jsonPath = '../config/server.' + process.env.NODE_ENV + '.json';
+const json = require(jsonPath);
+
+const conf = new Configuration(json);
+const server = new Server(conf);
 
 server.init();
-server.run('http://localhost', 8080);
+server.run();
