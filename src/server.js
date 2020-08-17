@@ -2,20 +2,18 @@ const express = require('express');
 const controllers = require('./controllers');
 
 class Server {
-    constructor(options) {
+    constructor(config) {
         this.app = express();
+        this.config = config;
     }
 
     init = () => {
         console.debug('Initializing server instance...');
-        // set up routing
         this.routeSetUp();
-        // set up file storage
         this.storageSetUp();
-        // set up bot
         this.botSetUp();
-        // set up queue
-        // set up notification center
+        this.queueSetUp();
+        this.notificationCenterSetUp();
     };
 
     routeSetUp = () => {
@@ -33,19 +31,33 @@ class Server {
     };
 
     botSetUp = () => {
-        console.debug('Setting up Instabot instance...')
-        console.debug('Instabot setup finished.')
+        console.debug('Setting up Instabot instance...');
+        console.debug('Instabot setup finished.');
     };
 
     queueSetUp = () => {
-        console.debug('Setting up queue...')
-        console.debug('Queue setup finished')
-    }
+        console.debug('Setting up queue...');
+        console.debug('Queue setup finished');
+    };
 
-    run = (host, port) => {
-        this.app.listen(port, () => {
-            console.log('Running server instance at ' + host + ':' + port);
+    notificationCenterSetUp = () => {
+        console.debug('Setting up notification center...');
+        console.debug('Notification center setup finished');
+    };
+
+    run = () => {
+        this.app.listen(this.port, () => {
+            console.log(
+                'Running server instance at ' +
+                    this.config.host +
+                    ':' +
+                    this.config.port
+            );
         });
+    };
+
+    stop = () => {
+        console.debug('Closing resources...');
     };
 }
 
