@@ -1,0 +1,7 @@
+{
+    "APP_HOST": "http://localhost",
+    "APP_PORT": 8080,
+    "INSTAGRAM_USER": "",
+    "INSTAGRAM_PWD": "",
+    "POST_IMAGE_DIRECTORY": ""
+}
