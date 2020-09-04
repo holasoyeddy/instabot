@@ -1,10 +1,11 @@
 const express = require('express');
 const controllers = require('./controllers');
+const middleware = require('./middleware');
+const config = require('./configuration');
 
 class Server {
-    constructor(config) {
+    constructor() {
         this.app = express();
-        this.config = config;
     }
 
     init = () => {
@@ -18,10 +19,38 @@ class Server {
 
     routeSetUp = () => {
         console.debug('Setting up routes...');
-        this.app.get('/', controllers.hello);
-        this.app.post('/api/login', controllers.authenticate);
-        this.app.post('/api/upload', controllers.addPostToQueue);
-        this.app.get('/api/queue', controllers.getQueuedPosts);
+        
+        this.app.use(express.json())
+
+        this.app.get(
+            '/', 
+            middleware.authenticated, 
+            controllers.hello
+        );
+
+        this.app.post(
+            '/api/login',
+            controllers.authenticate
+        );
+
+        this.app.post(
+            '/api/upload',
+            middleware.authenticated,
+            controllers.addPostToQueue
+        );
+        
+        this.app.get(
+            '/api/queue',
+            middleware.authenticated,
+            controllers.getQueuedPosts
+        );
+
+        this.app.get(
+            '/api/refresh',
+            controllers.refresh
+        );
+
+
         console.debug('API route setup finished');
     };
 
@@ -46,12 +75,12 @@ class Server {
     };
 
     run = () => {
-        this.app.listen(this.port, () => {
+        return this.app.listen(config.port, () => {
             console.log(
-                'Running server instance at ' +
-                    this.config.host +
+                'Running server instance at http://' +
+                    config.host +
                     ':' +
-                    this.config.port
+                    config.port
             );
         });
     };
@@ -61,4 +90,5 @@ class Server {
     };
 }
 
-module.exports = Server;
+const server = new Server();
+module.exports = server;
