@@ -1,6 +1,5 @@
 const config = require('./configuration');
 const jwt = require('jsonwebtoken');
-const authentication = require('./authentication');
 
 // Authentication middleware to validate JWT token on incoming requests.
 const authenticated = (req, res, next) => {
