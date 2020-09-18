@@ -23,4 +23,12 @@ const generateToken = () => {
     return jwt.sign(token, config.secret, { expiresIn: config.tokenExpireTime });
 };
 
-module.exports = { generateToken, authenticate, currentRefreshToken }
+const getNewRefreshToken = (rtoken) => {
+    if (rtoken == currentRefreshToken) {
+        return generateToken()
+    } else {
+        return null
+    }
+}
+
+module.exports = { generateToken, getNewRefreshToken, authenticate, currentRefreshToken }

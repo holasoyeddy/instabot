@@ -1,4 +1,6 @@
 const auth = require('./authentication');
+const jwt = require('jsonwebtoken');
+const config = require('./configuration');
 
 const hello = (req, res) => {
     console.debug("In hello controller")
@@ -11,7 +13,34 @@ const authenticate = (req, res) => {
 };
 
 const refresh = (req, res) => {
-    console.debug("REFRESHING")
+    const header = req.headers.authorization;
+
+    if (header == null) {
+        console.debug('ERROR: Missing Authorization header');
+        return res.sendStatus(400);
+    }
+
+    const token = header.split(' ')[1];
+
+    if (token == null) {
+        console.debug('ERROR: Token not included in Authorization header');
+        return res.sendStatus(400);
+    }
+
+    jwt.verify(token, config.secret, {ignoreExpiration: true}, (err, decoded) => {
+        if (err) {
+            console.debug("ERROR: ", err);
+            return res.sendStatus(400);
+        } else {
+            console.debug("Refreshing token ")
+            const token = auth.getNewRefreshToken(decoded.refresh);
+            if (token == null) {
+                console.debug("ERROR: REFRESH TOKEN MISMATCH")
+                return res.sendStatus(400)
+            }
+            return res.send(token)
+        }
+    })
 };
 
 const addPostToQueue = (req, res) => {
