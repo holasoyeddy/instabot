@@ -1,6 +1,7 @@
 const auth = require('./authentication');
 const jwt = require('jsonwebtoken');
 const config = require('./configuration');
+const service = require('./service')
 
 const hello = (req, res) => {
     console.debug("In hello controller")
@@ -43,12 +44,24 @@ const refresh = (req, res) => {
     })
 };
 
-const addPostToQueue = (req, res) => {
-    res.send('Upload');
-};
+const queuePost = (req, res, next) => {
+    console.debug("File has been uploaded. Adding post to queue...")
+    const post = {};
+    post.caption = req.body.caption;
+    post.filePath = req.file.path;
+
+    service.addToPostQueue(post);
+    
+    res.status(201).json({
+        "result": "Your post has been queued successfully!"
+    })
+}
 
 const getQueuedPosts = (req, res) => {
-    res.send('Queued posts');
+    const queue = service.getPostQueue();
+    res.status(200).json({
+        "queue": queue
+    });
 };
 
-module.exports = { hello, authenticate, refresh, addPostToQueue, getQueuedPosts };
+module.exports = { hello, authenticate, refresh, queuePost, getQueuedPosts };
