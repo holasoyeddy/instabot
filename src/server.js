@@ -2,6 +2,8 @@ const express = require('express');
 const routing = require('./routing');
 const service = require('./service');
 const config = require('./configuration');
+var fs = require('fs');
+
 
 class Server {
     constructor() {
@@ -10,10 +12,21 @@ class Server {
 
     init = () => {
         console.debug('Initializing server instance...');
+        this.mkdir();
         routing.setup(this.app);
         service.setup();
     };
+    mkdir = () => {
+        console.debug("Creating required application directories...")
+        
+        if (!fs.existsSync(process.cwd() + "/cache/img")) {
+            fs.mkdirSync(process.cwd() + "/cache/img", {recursive: true})
+        }
 
+        if (!fs.existsSync(process.cwd() + "/cache/data")) {
+            fs.mkdirSync(process.cwd() + "/cache/data", {recursive: true})
+        }
+    }
     run = () => {
         return this.app.listen(config.port, () => {
             console.log(
