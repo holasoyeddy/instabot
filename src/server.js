@@ -1,6 +1,5 @@
 const express = require('express');
-const controllers = require('./controllers');
-const middleware = require('./middleware');
+const routing = require('./routing');
 const config = require('./configuration');
 
 class Server {
@@ -10,48 +9,11 @@ class Server {
 
     init = () => {
         console.debug('Initializing server instance...');
-        this.routeSetUp();
+        routing.setup(this.app);
         this.storageSetUp();
         this.botSetUp();
         this.queueSetUp();
         this.notificationCenterSetUp();
-    };
-
-    routeSetUp = () => {
-        console.debug('Setting up routes...');
-        
-        this.app.use(express.json())
-
-        this.app.get(
-            '/', 
-            middleware.authenticated, 
-            controllers.hello
-        );
-
-        this.app.post(
-            '/api/login',
-            controllers.authenticate
-        );
-
-        this.app.post(
-            '/api/upload',
-            middleware.authenticated,
-            controllers.addPostToQueue
-        );
-        
-        this.app.get(
-            '/api/queue',
-            middleware.authenticated,
-            controllers.getQueuedPosts
-        );
-
-        this.app.get(
-            '/api/refresh',
-            controllers.refresh
-        );
-
-
-        console.debug('API route setup finished');
     };
 
     storageSetUp = () => {
