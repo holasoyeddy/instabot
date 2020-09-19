@@ -19,11 +19,13 @@ class Instabot {
     }
 
     postToFeed = async (post) => {
+        // TODO: Add try-catch for failed browser launch...
         console.debug('Opening browser...');
         let browser = await puppeteer.launch(this.browserOptions);
         let page = await browser.newPage();
         page.setUserAgent(this.userAgent);
 
+        // TODO: Add try-catch for failed login...
         console.debug('Visiting ', this.instagramLoginURL);
         await page.goto(this.instagramLoginURL);
         await page.waitForSelector("input[name='username']");
@@ -51,6 +53,7 @@ class Instabot {
         // Make sure we are signed in
         await page.waitForNavigation();
 
+        // TODO: Add try-catch for failed feed opening...
         console.debug('Opening feed...');
 
         // They may try to show us something but just go straight to instagram.com
@@ -63,6 +66,7 @@ class Instabot {
         let fileInputs = await page.$$('input[type="file"]');
         let input = fileInputs[fileInputs.length - 1];
 
+        // TODO: Add try-catch for failed to create post...
         console.debug('Creating new post...');
 
         // Upload the file
@@ -75,6 +79,7 @@ class Instabot {
         });
         await page.waitFor(250);
 
+        // TODO: Add try-catch for failed to upload image...
         console.debug('Uploading image...');
         await input.uploadFile(post.filePath);
         await page.waitFor(250);
@@ -84,9 +89,9 @@ class Instabot {
         let next = await page.$x("//button[contains(text(),'Next')]");
         await next[0].click();
 
-        // resize goes here
+        // TODO: Fix image cropping before upload (always fullscreen)
 
-
+        // TODO: Add try-catch for failed to add caption...
         if (post.caption != null & post.caption != undefined & post.caption != '') {
             console.debug('Adding caption...');
             // Wait for the caption option
@@ -100,6 +105,7 @@ class Instabot {
             // Type
             await page.keyboard.type(post.caption);
         }
+        // TODO: Add try-catch for failed while sharing...
         // Get the share button and click it
         await page.waitForXPath("//button[contains(text(),'Share')]");
         let share = await page.$x("//button[contains(text(),'Share')]");

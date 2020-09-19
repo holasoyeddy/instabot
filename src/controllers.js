@@ -46,6 +46,7 @@ const refresh = (req, res) => {
 
 const queuePost = (req, res, next) => {
     console.debug("File has been uploaded. Adding post to queue...")
+    // TODO: Add image size validation
     const post = {};
     post.caption = req.body.caption;
     post.filePath = req.file.path;
@@ -58,10 +59,19 @@ const queuePost = (req, res, next) => {
 }
 
 const getQueuedPosts = (req, res) => {
-    const queue = service.getPostQueue();
+    const queue = service.getPostQueue().map((value, index) => {
+        // TODO: Map queue to public queue
+    });
+
     res.status(200).json({
-        "queue": queue
+        "queue": queue,
+        "total": service.getQueuedPostCount(),
     });
 };
+
+// TODO: Add re-order queue endpoint
+// TODO: Add dequeue post endpoint
+// TODO: Add update post endpoint
+
 
 module.exports = { hello, authenticate, refresh, queuePost, getQueuedPosts };

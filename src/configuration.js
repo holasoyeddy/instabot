@@ -2,6 +2,7 @@ const config = require('./controllers')
 
 class Configuration {
     constructor () {
+        // TODO: Add configuration validation
         const jsonPath = process.cwd() + '/config/server.' + process.env.NODE_ENV + '.json';
         const json = require(jsonPath);
         this.host = json["APP_HOST"];
