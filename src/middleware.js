@@ -1,6 +1,7 @@
 const config = require('./configuration');
 const jwt = require('jsonwebtoken');
-
+const multer = require('multer')
+const path = require('path')
 // Authentication middleware to validate JWT token on incoming requests.
 const authenticated = (req, res, next) => {
     const header = req.headers.authorization;
@@ -42,4 +43,25 @@ const authenticated = (req, res, next) => {
     });
 };
 
-module.exports = { authenticated };
+// Multer upload middleware with configuration
+const upload = multer(
+    { 
+        storage: multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, process.cwd() + "/cache/img" );
+            },
+            filename: (req, file, cb) => {
+                cb(null,  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + path.extname(file.originalname));
+            }
+        }), 
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+                cb(null, true);
+            } else {
+                cb(null, false);
+            }
+        } 
+    }
+);
+
+module.exports = { authenticated, upload };
