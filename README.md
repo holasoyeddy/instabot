@@ -5,7 +5,7 @@ Instabot is an instagram bot server that allows us to automate my shitposting.
 ## Features
 
 * ### Scheduled Post Queue: 
-Instabot has a post queue so you can post your images in a timely manner. It takes a cron expression and publishes posts on a timely schedule base on that.
+Instabot has a post queue so you can post your images in a timely manner. It takes a cron expression and publishes posts on a timely schedule based on that.
 
 That's about it.
 
@@ -51,4 +51,6 @@ yarn start // for production env
 
 ## Contributing
 
-I really don't expect anybody to contribute or use this. It's a bit ad-hoc and not really my best work. I'm just hosting it on GitHub to upload something since my GitHub page is mostly abandoned. I'm not even sure why I bothered to write this README, to be honest.
+I really don't expect anybody to contribute or use this. It's a bit ad-hoc and not really my best work. 
+
+I'm just hosting it on GitHub to upload something since my GitHub page is mostly abandoned. I'm not even sure why I bothered to write this README, to be honest.
