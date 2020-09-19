@@ -2,7 +2,7 @@ const config = require('./controllers')
 
 class Configuration {
     constructor () {
-        const jsonPath = '../config/server.' + process.env.NODE_ENV + '.json';
+        const jsonPath = process.cwd() + '/config/server.' + process.env.NODE_ENV + '.json';
         const json = require(jsonPath);
         this.host = json["APP_HOST"];
         this.port = json["APP_PORT"];
