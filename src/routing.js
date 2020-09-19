@@ -21,7 +21,8 @@ const setup = (app) => {
     app.post(
         '/api/upload',
         middleware.authenticated,
-        controllers.addPostToQueue
+        middleware.upload.single('image'),
+        controllers.queuePost
     );
     
     app.get(
