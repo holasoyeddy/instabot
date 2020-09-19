@@ -22,8 +22,7 @@ const setup = () => {
             {
                 username: config.igUser,
                 password: config.igPwd,
-                headless: true,
-                imageDir: config.imageDir
+                headless: process.env.NODE_ENV != 'development',
             }
         );
     

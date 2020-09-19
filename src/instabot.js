@@ -16,7 +16,6 @@ class Instabot {
             'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
         this.username = options.username;
         this.password = options.password;
-        this.imageDir = options.imageDir;
     }
 
     postToFeed = async (post) => {
@@ -77,7 +76,7 @@ class Instabot {
         await page.waitFor(250);
 
         console.debug('Uploading image...');
-        await input.uploadFile(this.imageDir + post.fileName);
+        await input.uploadFile(post.filePath);
         await page.waitFor(250);
         // Wait for the next button
         await page.waitForXPath("//button[contains(text(),'Next')]");
