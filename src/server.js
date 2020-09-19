@@ -1,5 +1,6 @@
 const express = require('express');
 const routing = require('./routing');
+const service = require('./service');
 const config = require('./configuration');
 
 class Server {
@@ -10,30 +11,7 @@ class Server {
     init = () => {
         console.debug('Initializing server instance...');
         routing.setup(this.app);
-        this.storageSetUp();
-        this.botSetUp();
-        this.queueSetUp();
-        this.notificationCenterSetUp();
-    };
-
-    storageSetUp = () => {
-        console.debug('Setting up storage...');
-        console.debug('Storage setup finished');
-    };
-
-    botSetUp = () => {
-        console.debug('Setting up Instabot instance...');
-        console.debug('Instabot setup finished.');
-    };
-
-    queueSetUp = () => {
-        console.debug('Setting up queue...');
-        console.debug('Queue setup finished');
-    };
-
-    notificationCenterSetUp = () => {
-        console.debug('Setting up notification center...');
-        console.debug('Notification center setup finished');
+        service.setup();
     };
 
     run = () => {
